@@ -3,15 +3,15 @@ var debug = false; //set this value to true in devloper tools to show debug func
 const BACKGROUND_COLOR = 51;
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
-const SHIP_ROTATION_INCREMENT = 4;
+const SHIP_ROTATION_INCREMENT = 0.1;
 
 const SHIP_MAX_HEALTH = 3;
-const SHIP_VELOCITY = 3;
 const SHIELD_MAX_HEALTH = 3;
 
+const ASTEROID_MIN_SPLIT_LIMIT = 15;
 const ASTEROID_DAMAGE_SHIELD = 1;
 const ASTEROID_DAMAGE_SHIP = 1;
-const ASTEROID_MAX_NUMBER = 1;
+const ASTEROID_MAX_NUMBER = 15;
 
 let ship;
 let sheild;
@@ -33,6 +33,8 @@ function draw() {
     background(BACKGROUND_COLOR);
     if (!gameIsOver) {
         ship.show();
+        ship.turn();
+        ship.update();
         // shield.show();
         for (let i = bullets.length - 1; i > -1; i--) {
             bullets[i].show();
@@ -78,7 +80,7 @@ function draw() {
                         //Debug statement
                         //console.log(asteroids[i].getRadius());
 
-                        if (asteroids[i].getRadius() > 30) {
+                        if (asteroids[i].getRadius() > ASTEROID_MIN_SPLIT_LIMIT) {
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                         }
@@ -88,7 +90,6 @@ function draw() {
                     }
                 }
             }
-
         }
         controls();
     }
@@ -100,19 +101,24 @@ function checkIfGameOver() {
     }
 }
 
+function keyReleased() {
+    ship.setRotate(0);
+}
+
 function controls() {
     if (keyIsDown(LEFT_ARROW)) {
-        ship.setRotate(SHIP_ROTATION_INCREMENT, "decrease");
-    } else if (keyIsDown(RIGHT_ARROW)) {
-        ship.setRotate(SHIP_ROTATION_INCREMENT, "increase");
+        ship.setRotate(-SHIP_ROTATION_INCREMENT);
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+        ship.setRotate(SHIP_ROTATION_INCREMENT);
     }
     if (keyIsDown(17)) {
-        ship.move(SHIP_VELOCITY);
+        ship.boost();
     }
 }
 
 function keyPressed() {
-    if (keyIsDown(32)) {
+    if (keyCode == 32) {
         bullets.push(new Bullet(ship.getShipTipPos().x,
             ship.getShipTipPos().y,
             ship.getRotationRadians()));

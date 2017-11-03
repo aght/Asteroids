@@ -4,6 +4,7 @@ function Asteroid(posX, posY, radius) {
     this.velocity = createVector(random(-2, 2), random(-2, 2));
     this.r = radius
     this.offset = [];
+    this.wrapEdgesFactor = 1.2;
 
     for (let i = 0; i < this.points; i++) {
         this.offset[i] = random(-10, 10);
@@ -26,7 +27,9 @@ function Asteroid(posX, posY, radius) {
 
         //debug for asteroid collisions        
         if (debug == true) {
+            push();
             stroke(0, 255, 0);
+            ellipseMode(CENTER);
             ellipse(0, 0, this.r * 2);
             pop();
         }
@@ -39,22 +42,22 @@ function Asteroid(posX, posY, radius) {
     }
 
     this.hitEdge = function () {
-        if (this.pos.x > width + this.r * 1.5) {
-            this.pos.x = -(this.r * 1.5);
+        if (this.pos.x > width + this.r * this.wrapEdgesFactor) {
+            this.pos.x = -(this.r * this.wrapEdgesFactor);
         }
-        if (this.pos.x < -(this.r * 1.5)) {
-            this.pos.x = width + this.r * 1.5;
+        if (this.pos.x < -(this.r * this.wrapEdgesFactor)) {
+            this.pos.x = width + this.r * this.wrapEdgesFactor;
         }
-        if (this.pos.y > height + this.r * 1.5) {
-            this.pos.y = -(this.r * 1.5);
+        if (this.pos.y > height + this.r * this.wrapEdgesFactor) {
+            this.pos.y = -(this.r * this.wrapEdgesFactor);
         }
-        if (this.pos.y < -60) {
-            this.pos.y = height + this.r * 1.5;
+        if (this.pos.y < -(this.r * this.wrapEdgesFactor)) {
+            this.pos.y = height + this.r * this.wrapEdgesFactor;
         }
     }
 
     this.hit = function (bulletX, bulletY) {
-        if (dist(this.pos.x, this.pos.y, bulletX, bulletY) < this.r) {
+        if (dist(this.pos.x + this.r, this.pos.y + this.r, bulletX, bulletY) < this.r) {
             // push();
             // textAlign(CENTER);
             // text("HIT", this.pos.x, this.pos.y);
@@ -68,9 +71,10 @@ function Asteroid(posX, posY, radius) {
     }
 
     this.getPos = function () {
+        //text("test", this.pos.x + this.r, this.pos.y + this.r);
         return {
-            x: this.pos.x,
-            y: this.pos.y
+            x: (this.pos.x + this.r),
+            y: (this.pos.y + this.r)
         };
     }
 }

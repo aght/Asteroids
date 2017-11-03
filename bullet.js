@@ -1,7 +1,7 @@
 function Bullet(shipTipX, shipTipY, rotation) {
     this.pos = createVector(shipTipX, shipTipY);
     this.rot = rotation;
-    
+
     this.vx = this.vy = 10;
 
     this.show = function () {
@@ -9,7 +9,7 @@ function Bullet(shipTipX, shipTipY, rotation) {
         noFill();
         stroke(255);
         translate(this.pos.x, this.pos.y);
-        rotate((this.rot) * (180 / Math.PI) + 90);
+        rotate(this.rot + PI / 2);
         quad(-4, 4, 0, -4, 4, 4, 0, 2);
 
         //debug for bullet collision
@@ -26,6 +26,7 @@ function Bullet(shipTipX, shipTipY, rotation) {
     }
 
     this.getPos = function () {
+        //text("test", this.pos.x, this.pos.y);
         return {
             x: this.pos.x,
             y: this.pos.y

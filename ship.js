@@ -2,9 +2,11 @@ function Ship(health, damageRatio) {
     this.REFERENCE_CIRCLE_RADIUS = 20;
     this.shipDamageRatio = damageRatio;
     this.shipHealth = health;
-    this.shipRotation = 0;
+    this.shipHeadingAngle = 0;
+    this.rotation = 0
     this.pos = createVector(width / 2, height / 2);
-    this.r = 28;
+    this.collisionRadius = 28;
+    this.vel = createVector(0, 0);
 
     this.show = function () {
         if (this.shipHealth > 0) {
@@ -13,8 +15,7 @@ function Ship(health, damageRatio) {
             strokeWeight(2);
             noFill();
             translate(this.pos.x, this.pos.y);
-            angleMode(DEGREES);
-            rotate(this.shipRotation);
+            rotate(this.shipHeadingAngle);
             quad(-10, 10, 0, -14, 10, 10, 0, 5);
 
             //debug for ship
@@ -29,23 +30,29 @@ function Ship(health, damageRatio) {
         text("Ship Health: " + this.shipHealth, 55, 55);
     }
 
-    this.setRotate = function (angleIncrement, type) {
-        if (type == "increase") {
-            this.shipRotation += angleIncrement;
-        } else if (type == "decrease") {
-            this.shipRotation -= angleIncrement;
-        }
+    this.turn = function () {
+        this.shipHeadingAngle += this.rotation;
     }
 
-    this.move = function (vel) {
-        this.pos.x += vel * Math.cos((this.shipRotation - 90) * (Math.PI / 180));
-        this.pos.y += vel * Math.sin((this.shipRotation - 90) * (Math.PI / 180));
+    this.setRotate = function (angleIncrement) {
+        this.rotation = angleIncrement;
+    }
+
+    this.update = function () {
+        this.pos.add(this.vel);
+        this.vel.mult(0.98);
+    }
+
+    this.boost = function () {
+        let force = p5.Vector.fromAngle(this.shipHeadingAngle - PI / 2);
+        force.mult(0.1)
+        this.vel.add(force);
     }
 
     /*tip of the ship is calculated using a reference circle, the angle of the 
     ship will determine the location of the tip of the ship.*/
     this.getShipTipPos = function () {
-        let rot = (this.shipRotation - 90) * (Math.PI / 180);
+        let rot = this.shipHeadingAngle - PI / 2;
         let x = this.pos.x + this.REFERENCE_CIRCLE_RADIUS * Math.cos(rot);
         let y = this.pos.y + this.REFERENCE_CIRCLE_RADIUS * Math.sin(rot);
         return {
@@ -55,14 +62,15 @@ function Ship(health, damageRatio) {
     }
 
     this.checkCollision = function (asteroidX, asteroidY) {
-        if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.r) {
-            this.shipHealth--;
+        if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.collisionRadius) {
+            // this.shipHealth--;
+            return true;
         }
         // console.log("SHIP: " + floor(this.pos.x) + " " + floor(this.pos.y) + "ASTER: " + floor(asteroidX) + " " + floor(asteroidY));
     }
 
     this.getRotationRadians = function () {
-        return (this.shipRotation - 90) * (Math.PI / 180);
+        return this.shipHeadingAngle - PI / 2;
     }
 
     this.getHealth = function () {
