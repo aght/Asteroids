@@ -43,7 +43,7 @@ function Ship(health, damageRatio) {
         this.vel.mult(0.98);
     }
 
-    this.boost = function () {
+    this.addThrust = function () {
         let force = p5.Vector.fromAngle(this.shipHeadingAngle - PI / 2);
         force.mult(0.1)
         this.vel.add(force);

@@ -35,7 +35,7 @@ function draw() {
         ship.show();
         ship.turn();
         ship.update();
-        // shield.show();
+        //shield.show();
         for (let i = bullets.length - 1; i > -1; i--) {
             bullets[i].show();
             bullets[i].update();
@@ -113,7 +113,7 @@ function controls() {
         ship.setRotate(SHIP_ROTATION_INCREMENT);
     }
     if (keyIsDown(17)) {
-        ship.boost();
+        ship.addThrust();
     }
 }
 
