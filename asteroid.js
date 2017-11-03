@@ -24,8 +24,7 @@ function Asteroid(posX, posY, radius) {
             vertex(x, y);
         }
         endShape(CLOSE);
-
-        //debug for asteroid collisions        
+      
         if (debug == true) {
             push();
             stroke(0, 255, 0);
@@ -58,10 +57,6 @@ function Asteroid(posX, posY, radius) {
 
     this.hit = function (bulletX, bulletY) {
         if (dist(this.pos.x + this.r, this.pos.y + this.r, bulletX, bulletY) < this.r) {
-            // push();
-            // textAlign(CENTER);
-            // text("HIT", this.pos.x, this.pos.y);
-            // pop();
             return true;
         }
     }
