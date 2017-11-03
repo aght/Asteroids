@@ -6,11 +6,12 @@ const CANVAS_HEIGHT = 500;
 const SHIP_ROTATION_INCREMENT = 4;
 
 const SHIP_MAX_HEALTH = 3;
+const SHIP_VELOCITY = 3;
 const SHIELD_MAX_HEALTH = 3;
 
 const ASTEROID_DAMAGE_SHIELD = 1;
 const ASTEROID_DAMAGE_SHIP = 1;
-const ASTEROID_MAX_NUMBER = 15;
+const ASTEROID_MAX_NUMBER = 1;
 
 let ship;
 let sheild;
@@ -61,23 +62,30 @@ function draw() {
         }
 
         //ERRORS MAY OCCUR!
-        for (let i = asteroids.length - 1; i > -1; i--) {
+        for (let i = asteroids.length - 1; i >= 0; --i) {
             asteroids[i].show();
             asteroids[i].update();
             asteroids[i].hitEdge();
-            for (let j = bullets.length - 1; j > -1; j--) {
-                if (asteroids[i].hit(bullets[j].getPos().x, bullets[j].getPos().y)) {
 
-                    //Debug statement
-                    //console.log(asteroids[i].getRadius());
+            ship.checkCollision(asteroids[i].getPos().x, asteroids[i].getPos().y);
 
-                    if (asteroids[i].getRadius() > 30) {
-                        asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
-                        asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
+            // console.log("Asteroid: " + asteroids[i].getPos().x + " " + asteroids[i].getPos().y);
+            // console.log("Ship: " + ship.getPos().x, ship.getPos().y);
+            for (let j = bullets.length - 1; j >= 0; --j) {
+                if (asteroids[i] != undefined) {
+                    if (asteroids[i].hit(bullets[j].getPos().x, bullets[j].getPos().y)) {
+
+                        //Debug statement
+                        //console.log(asteroids[i].getRadius());
+
+                        if (asteroids[i].getRadius() > 30) {
+                            asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
+                            asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
+                        }
+
+                        bullets.splice(j, 1);
+                        asteroids.splice(i, 1);
                     }
-
-                    bullets.splice(j, 1);
-                    asteroids.splice(i, 1);
                 }
             }
 
@@ -97,6 +105,9 @@ function controls() {
         ship.setRotate(SHIP_ROTATION_INCREMENT, "decrease");
     } else if (keyIsDown(RIGHT_ARROW)) {
         ship.setRotate(SHIP_ROTATION_INCREMENT, "increase");
+    }
+    if (keyIsDown(17)) {
+        ship.move(SHIP_VELOCITY);
     }
 }
 

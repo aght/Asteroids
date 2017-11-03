@@ -4,6 +4,7 @@ function Ship(health, damageRatio) {
     this.shipHealth = health;
     this.shipRotation = 0;
     this.pos = createVector(width / 2, height / 2);
+    this.r = 28;
 
     this.show = function () {
         if (this.shipHealth > 0) {
@@ -24,8 +25,8 @@ function Ship(health, damageRatio) {
             }
             pop();
         }
-        // fill(255);
-        // text("Ship Health: " + this.shipHealth, 55, 55);
+        fill(255);
+        text("Ship Health: " + this.shipHealth, 55, 55);
     }
 
     this.setRotate = function (angleIncrement, type) {
@@ -36,22 +37,28 @@ function Ship(health, damageRatio) {
         }
     }
 
+    this.move = function (vel) {
+        this.pos.x += vel * Math.cos((this.shipRotation - 90) * (Math.PI / 180));
+        this.pos.y += vel * Math.sin((this.shipRotation - 90) * (Math.PI / 180));
+    }
+
     /*tip of the ship is calculated using a reference circle, the angle of the 
     ship will determine the location of the tip of the ship.*/
     this.getShipTipPos = function () {
         let rot = (this.shipRotation - 90) * (Math.PI / 180);
-        let x = width / 2 + this.REFERENCE_CIRCLE_RADIUS * Math.cos(rot);
-        let y = height / 2 + this.REFERENCE_CIRCLE_RADIUS * Math.sin(rot);
+        let x = this.pos.x + this.REFERENCE_CIRCLE_RADIUS * Math.cos(rot);
+        let y = this.pos.y + this.REFERENCE_CIRCLE_RADIUS * Math.sin(rot);
         return {
             x: x,
             y: y
         };
     }
 
-    this.collision = function (asteroidX, asteroidsY) {
-        if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY)) {
-            return true;
+    this.checkCollision = function (asteroidX, asteroidY) {
+        if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.r) {
+            this.shipHealth--;
         }
+        // console.log("SHIP: " + floor(this.pos.x) + " " + floor(this.pos.y) + "ASTER: " + floor(asteroidX) + " " + floor(asteroidY));
     }
 
     this.getRotationRadians = function () {
@@ -60,5 +67,12 @@ function Ship(health, damageRatio) {
 
     this.getHealth = function () {
         return this.shipHealth;
+    }
+
+    this.getPos = function () {
+        return {
+            x: this.pos.x,
+            y: this.pos.y
+        };
     }
 }

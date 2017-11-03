@@ -17,7 +17,6 @@ function Bullet(shipTipX, shipTipY, rotation) {
             stroke(0, 255, 0);
             ellipse(0, 0, 8, 8);
         }
-
         pop();
     }
 
