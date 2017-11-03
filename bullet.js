@@ -20,6 +20,16 @@ function Bullet(shipTipX, shipTipY, rotation) {
         pop();
     }
 
+    this.offScreen = function () {
+        if (this.pos.x <= -5 ||
+            this.pos.x > width + 5) {
+            return true;
+        } else if (this.pos.y <= -5 ||
+            this.pos.y > height + 5) {
+            return true
+        }
+    }
+
     this.update = function () {
         this.pos.x += this.vx * Math.cos(this.rot);
         this.pos.y += this.vy * Math.sin(this.rot);

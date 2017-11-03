@@ -40,46 +40,22 @@ function draw() {
             bullets[i].show();
             bullets[i].update();
 
-            /*
-            if the bullets leave the screen area they are deleted from
-            the array
-            */
-            if (bullets[i].getPos().x <= -5 ||
-                bullets[i].getPos().x > width + 5) {
+            if (bullets[i].offScreen()) {
                 bullets.splice(i, 1);
-            } else if (bullets[i].getPos().y <= -5 ||
-                bullets[i].getPos().y > height + 5) {
-                bullets.splice(i, 1);
-            } else if (debug == true) {
-                text(Math.floor(bullets[i].getPos().x) +
-                    ", " +
-                    Math.floor(bullets[i].getPos().y),
-                    bullets[i].getPos().x,
-                    bullets[i].getPos().y);
             }
-
-            /*used to test if bullets delete themselves from array if they 
-            leave the screen area*/
-            //console.log("Bullet Array Length: " + bullets.length);
+            //console.log(bullets.length);
         }
 
-        //ERRORS MAY OCCUR!
         for (let i = asteroids.length - 1; i >= 0; --i) {
             asteroids[i].show();
             asteroids[i].update();
             asteroids[i].hitEdge();
 
             ship.checkCollision(asteroids[i].getPos().x, asteroids[i].getPos().y);
-
-            // console.log("Asteroid: " + asteroids[i].getPos().x + " " + asteroids[i].getPos().y);
-            // console.log("Ship: " + ship.getPos().x, ship.getPos().y);
+            
             for (let j = bullets.length - 1; j >= 0; --j) {
                 if (asteroids[i] != undefined) {
                     if (asteroids[i].hit(bullets[j].getPos().x, bullets[j].getPos().y)) {
-
-                        //Debug statement
-                        //console.log(asteroids[i].getRadius());
-
                         if (asteroids[i].getRadius() > ASTEROID_MIN_SPLIT_LIMIT) {
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
