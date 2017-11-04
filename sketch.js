@@ -5,12 +5,21 @@ const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 const SHIP_ROTATION_INCREMENT = 0.1;
 
-const SHIP_MAX_HEALTH = 300;
+const SHIP_MAX_LIVES = 3;
 
 const ASTEROID_MIN_SPLIT_LIMIT = 15;
 const ASTEROID_DAMAGE_SHIELD = 1;
 const ASTEROID_DAMAGE_SHIP = 1;
-const ASTEROID_MAX_NUMBER = 10;
+const ASTEROID_MAX_NUMBER = 5;
+const ASTEROID_MAX_SIZE = 45
+const ASTEROID_MIN_SIZE = 15;
+
+const SCORE_LARGE = 25;
+const SCORE_MEDIUM = 50;
+const SCORE_SMALL = 100;
+
+let score = 0;
+let lives = 3;
 
 let font;
 
@@ -29,16 +38,16 @@ function setup() {
     textFont(font)
     textSize(24);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    ship = new Ship(SHIP_MAX_HEALTH, ASTEROID_DAMAGE_SHIP);
+    ship = new Ship(SHIP_MAX_LIVES, ASTEROID_DAMAGE_SHIP);
     gui = new GUI();
     for (let i = 0; i < ASTEROID_MAX_NUMBER; i++) {
-        asteroids.push(new Asteroid(random(45, width - 45), random(45, height - 45), random(15, 45)));
+        asteroids.push(new Asteroid(random(45, width - 45), random(45, height - 45), random(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE)));
     }
 }
 
 function draw() {
     background(BACKGROUND_COLOR);
-    gui.show();
+    gui.show(lives, score);
     if (!gameIsOver) {
         ship.flash();
         ship.show(ship.shipColor);
@@ -67,6 +76,15 @@ function draw() {
                         if (asteroids[i].getRadius() > ASTEROID_MIN_SPLIT_LIMIT) {
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
+                        }
+                        
+                        //set score amount based on radius of asteroid
+                        if (asteroids[i].getRadius() > 35 && asteroids[i].getRadius() <= 45) {
+                            score += SCORE_LARGE;
+                        } else if (asteroids[i].getRadius() > 25 && asteroids[i].getRadius() <= 35) {
+                            score += SCORE_MEDIUM;
+                        } else if (asteroids[i].getRadius() <= 25) {
+                            score += SCORE_SMALL;
                         }
 
                         bullets.splice(j, 1);
