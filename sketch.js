@@ -1,4 +1,4 @@
-var debug = true; //set this value to true in devloper tools to show debug functions
+var debug = false; //set this value to true in devloper tools to show debug functions
 
 const BACKGROUND_COLOR = 51;
 const CANVAS_WIDTH = 700;
