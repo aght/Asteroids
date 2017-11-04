@@ -132,6 +132,10 @@ function Ship(lives, damageRatio) {
         this.lives++;
     }
 
+    this.getRadius = function () {
+        return this.radius;
+    }
+
     this.getPos = function () {
         return {
             x: this.pos.x,

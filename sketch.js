@@ -20,6 +20,7 @@ const SCORE_SMALL = 100;
 
 let score = 0;
 let lives = 3;
+let level = 1
 
 let font;
 let fontSize = 24
@@ -29,7 +30,11 @@ let ship;
 let sheild;
 let asteroids = [];
 let bullets = [];
+
+let title
+
 let gameIsOver = false;
+let gameStarted = false;
 
 function preload() {
     font = loadFont('/fonts/Hyperspace Bold.otf');
@@ -41,17 +46,20 @@ function setup() {
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     ship = new Ship(SHIP_MAX_LIVES, ASTEROID_DAMAGE_SHIP);
     gui = new GUI(fontSize);
+
     for (let i = 0; i < ASTEROID_MAX_NUMBER; i++) {
+        //TODO do not allow asteroids to spawn on or near ship
         let randX = random(45, width - 45);
         let randY = random(45, height - 45);
-        asteroids.push(new Asteroid(random(45, width - 45), random(45, height - 45), random(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE)));
+        let randRadius = random(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE);
+        asteroids.push(new Asteroid(randX, randY, randRadius));
     }
 }
 
 function draw() {
     background(BACKGROUND_COLOR);
-    gui.show(lives, score, fontSize);
-    if (!gameIsOver) {
+    if (!gameIsOver && gameStarted) {
+        gui.show(lives, score, level);
         ship.flash();
         ship.show();
         ship.turn();
@@ -97,6 +105,17 @@ function draw() {
             }
         }
         controls();
+    } else {
+        push();
+        translate(width/ 2, height / 2);
+        textAlign(CENTER);
+        fill(255);
+        stroke(255);
+        textSize(90);
+        text("Asteroids", 0,0);
+        textSize(20);
+        text("Press 'Enter' to start", 0, height / 2 - 20);
+        pop();
     }
 }
 
@@ -123,9 +142,16 @@ function controls() {
 }
 
 function keyPressed() {
+    //Space
     if (keyCode == 32) {
         bullets.push(new Bullet(ship.getShipTipPos().x,
             ship.getShipTipPos().y,
             ship.getRotationRadians()));
+    }
+
+    //Enter
+    if (keyCode == 13) {
+        gameIsOver = false;
+        gameStarted = true;
     }
 }

@@ -1,14 +1,31 @@
-function GUI() {
+function GUI(fontSize) {
 
-    this.margin = 30;
+    this.margin = 45;
     this.fontSize = fontSize;
+    this.scoreZeroPaddingLength = 6;
+    this.levelZeroPaddingLength = 2;
 
-    this.show = function (lives, score) {
+    this.show = function (lives, score, level) {
         push();
         fill(255);
-        translate(45, 45);
-        text(score, 0, 0);
-        //text(lives, 0, 24);
+        translate(this.margin, this.margin);
+
+        let paddedScore = score.toString();
+        while(paddedScore.length < this.scoreZeroPaddingLength) {
+            paddedScore =  + "0" + paddedScore ;
+        }
+        text(paddedScore, 0, 0);
+        pop();
+
+        push();
+        fill(255);
+        textAlign(CENTER);
+        translate(width / 2, this.margin);
+        let paddedLevel = level.toString();
+        while(paddedLevel.length < this.levelZeroPaddingLength) {
+            paddedLevel =  + "0" + paddedLevel ;
+        }
+        text(paddedLevel, 0,0);
         pop();
 
         switch (lives) {
