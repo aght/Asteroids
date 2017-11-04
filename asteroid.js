@@ -24,15 +24,17 @@ function Asteroid(posX, posY, radius) {
             vertex(x, y);
         }
         endShape(CLOSE);
-      
+        pop();
+              
         if (debug == true) {
             push();
+            noFill();
+            translate(this.pos.x + this.r, this.pos.y + this.r);
             stroke(0, 255, 0);
             ellipseMode(CENTER);
             ellipse(0, 0, this.r * 2);
             pop();
         }
-        pop();
     }
 
     this.update = function () {
@@ -66,7 +68,6 @@ function Asteroid(posX, posY, radius) {
     }
 
     this.getPos = function () {
-        //text("test", this.pos.x + this.r, this.pos.y + this.r);
         return {
             x: (this.pos.x + this.r),
             y: (this.pos.y + this.r)

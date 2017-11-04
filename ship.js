@@ -5,13 +5,23 @@ function Ship(health, damageRatio) {
     this.shipHeadingAngle = 0;
     this.rotation = 0
     this.pos = createVector(width / 2, height / 2);
-    this.collisionRadius = 28;
+    this.diameter = 28;
+    this.radius = this.diameter / 2;
     this.vel = createVector(0, 0);
 
-    this.show = function () {
+    this.allowDamage = true;
+
+    this.frameCountCounter = 0;
+    this.flashCounter = 0;
+    this.maxNumFlashes = 6;
+    this.isWhite = true;
+    this.shipColor = 255;
+    this.allowAgain = true;
+
+    this.show = function (strokeColor) {
         if (this.shipHealth > 0) {
             push();
-            stroke(255);
+            stroke(strokeColor);
             strokeWeight(2);
             noFill();
             translate(this.pos.x, this.pos.y);
@@ -22,12 +32,27 @@ function Ship(health, damageRatio) {
             if (debug == true) {
                 strokeWeight(1);
                 stroke(0, 255, 0);
-                ellipse(0, 0, 28, 28);
+                ellipse(0, 0, this.diameter);
             }
             pop();
         }
         fill(255);
         text("Ship Health: " + this.shipHealth, 55, 55);
+    }
+
+    this.offScreen = function () {
+        if (this.pos.x > width + this.diameter) {
+            this.pos.x = -this.diameter;
+        }
+        if (this.pos.x < -this.diameter) {
+            this.pos.x = width + this.diameter;
+        }
+        if (this.pos.y > height + this.diameter) {
+            this.pos.y = -this.diameter;
+        }
+        if (this.pos.y < -this.diameter) {
+            this.pos.y = height + this.diameter;
+        }
     }
 
     this.turn = function () {
@@ -61,12 +86,36 @@ function Ship(health, damageRatio) {
         };
     }
 
-    this.checkCollision = function (asteroidX, asteroidY) {
-        if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.collisionRadius) {
-            // this.shipHealth--;
-            return true;
+    this.checkCollision = function (asteroidX, asteroidY, asteroidRadius) {
+        if (this.allowDamage == true) {
+            if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.radius + asteroidRadius) {
+                this.shipHealth--;
+                this.allowDamage = false;
+            }
         }
         // console.log("SHIP: " + floor(this.pos.x) + " " + floor(this.pos.y) + "ASTER: " + floor(asteroidX) + " " + floor(asteroidY));
+    }
+
+    this.flash = function () {
+        if (this.allowDamage == false) {
+            this.frameCountCounter++;
+            if (this.frameCountCounter % 0.234375 == 0) {
+                if (this.flashCounter !== 6) {
+                    if (this.isWhite) {
+                        this.shipColor = 51;
+                        this.isWhite = false;
+                        this.flashCounter++;
+                    } else {
+                        this.shipColor = 255;
+                        this.isWhite = true;
+                        this.flashCounter++;
+                    }
+                } else {
+                    this.allowDamage = true;
+                    this.flashCounter = 0;
+                }
+            }
+        }
     }
 
     this.getRotationRadians = function () {
