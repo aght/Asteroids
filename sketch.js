@@ -22,6 +22,7 @@ let score = 0;
 let lives = 3;
 
 let font;
+let fontSize = 24
 
 let gui;
 let ship;
@@ -36,21 +37,23 @@ function preload() {
 
 function setup() {
     textFont(font)
-    textSize(24);
+    textSize(fontSize);
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     ship = new Ship(SHIP_MAX_LIVES, ASTEROID_DAMAGE_SHIP);
-    gui = new GUI();
+    gui = new GUI(fontSize);
     for (let i = 0; i < ASTEROID_MAX_NUMBER; i++) {
+        let randX = random(45, width - 45);
+        let randY = random(45, height - 45);
         asteroids.push(new Asteroid(random(45, width - 45), random(45, height - 45), random(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE)));
     }
 }
 
 function draw() {
     background(BACKGROUND_COLOR);
-    gui.show(lives, score);
+    gui.show(lives, score, fontSize);
     if (!gameIsOver) {
         ship.flash();
-        ship.show(ship.shipColor);
+        ship.show();
         ship.turn();
         ship.update();
         ship.offScreen();
@@ -69,7 +72,7 @@ function draw() {
             asteroids[i].hitEdge();
 
             ship.checkCollision(asteroids[i].getPos().x, asteroids[i].getPos().y, asteroids[i].getRadius());
-
+            lives = ship.getLives();
             for (let j = bullets.length - 1; j >= 0; --j) {
                 if (asteroids[i] != undefined) {
                     if (asteroids[i].hit(bullets[j].getPos().x, bullets[j].getPos().y)) {
@@ -77,7 +80,7 @@ function draw() {
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                         }
-                        
+
                         //set score amount based on radius of asteroid
                         if (asteroids[i].getRadius() > 35 && asteroids[i].getRadius() <= 45) {
                             score += SCORE_LARGE;

@@ -18,17 +18,16 @@ function Ship(lives, damageRatio) {
     this.shipColor = 255;
     this.allowAgain = true;
 
-    this.show = function (strokeColor) {
+    this.show = function () {
         if (this.lives > 0) {
             push();
-            stroke(strokeColor);
+            stroke(this.shipColor);
             strokeWeight(2);
             noFill();
             translate(this.pos.x, this.pos.y);
             rotate(this.shipHeadingAngle);
             quad(-10, 10, 0, -14, 10, 10, 0, 5);
 
-            //debug for ship
             if (debug == true) {
                 strokeWeight(1);
                 stroke(0, 255, 0);
@@ -36,8 +35,6 @@ function Ship(lives, damageRatio) {
             }
             pop();
         }
-        fill(255);
-        text("Ship Health: " + this.lives, 55, 55);
     }
 
     this.offScreen = function () {
@@ -89,11 +86,13 @@ function Ship(lives, damageRatio) {
     this.checkCollision = function (asteroidX, asteroidY, asteroidRadius) {
         if (this.allowDamage == true) {
             if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.radius + asteroidRadius) {
-                this.lives--;
                 this.allowDamage = false;
+
+                //Decrease lives right after collision
+                // this.lives--;
+                return true;
             }
         }
-        // console.log("SHIP: " + floor(this.pos.x) + " " + floor(this.pos.y) + "ASTER: " + floor(asteroidX) + " " + floor(asteroidY));
     }
 
     this.flash = function () {
@@ -113,6 +112,9 @@ function Ship(lives, damageRatio) {
                 } else {
                     this.allowDamage = true;
                     this.flashCounter = 0;
+
+                    //Decrease lives after done flashing
+                    this.lives--;
                 }
             }
         }
@@ -122,8 +124,12 @@ function Ship(lives, damageRatio) {
         return this.shipHeadingAngle - PI / 2;
     }
 
-    this.getHealth = function () {
+    this.getLives = function () {
         return this.lives;
+    }
+
+    this.gainLife = function() {
+        this.lives++;
     }
 
     this.getPos = function () {
