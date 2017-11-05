@@ -1,7 +1,7 @@
-function Ship(lives, damageRatio) {
+function Ship(damageRatio) {
     this.REFERENCE_CIRCLE_RADIUS = 20;
     this.shipDamageRatio = damageRatio;
-    this.lives = lives;
+    this.lives;
     this.shipHeadingAngle = 0;
     this.rotation = 0
     this.pos = createVector(width / 2, height / 2);
@@ -19,22 +19,20 @@ function Ship(lives, damageRatio) {
     this.allowAgain = true;
 
     this.show = function () {
-        if (this.lives > 0) {
-            push();
-            stroke(this.shipColor);
-            strokeWeight(2);
-            noFill();
-            translate(this.pos.x, this.pos.y);
-            rotate(this.shipHeadingAngle);
-            quad(-10, 10, 0, -14, 10, 10, 0, 5);
+        push();
+        stroke(this.shipColor);
+        strokeWeight(2);
+        noFill();
+        translate(this.pos.x, this.pos.y);
+        rotate(this.shipHeadingAngle);
+        quad(-10, 10, 0, -14, 10, 10, 0, 5);
 
-            if (debug == true) {
-                strokeWeight(1);
-                stroke(0, 255, 0);
-                ellipse(0, 0, this.diameter);
-            }
-            pop();
+        if (debug == true) {
+            strokeWeight(1);
+            stroke(0, 255, 0);
+            ellipse(0, 0, this.diameter);
         }
+        pop();
     }
 
     this.offScreen = function () {
@@ -128,8 +126,16 @@ function Ship(lives, damageRatio) {
         return this.lives;
     }
 
-    this.gainLife = function() {
-        this.lives++;
+    this.gainLife = function (lives) {
+        if (lives !== undefined) {
+            this.lives = lives;
+        } else {
+            if (lives >= 6) {
+                lives = 6;
+            } else {
+                this.lives++;
+            }    
+        }
     }
 
     this.getRadius = function () {
@@ -141,5 +147,10 @@ function Ship(lives, damageRatio) {
             x: this.pos.x,
             y: this.pos.y
         };
+    }
+
+    this.setPos = function (x, y) {
+        this.pos.x = x;
+        this.pos.y = y;
     }
 }
