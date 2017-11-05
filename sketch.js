@@ -5,7 +5,7 @@ const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
 const SHIP_ROTATION_INCREMENT = 0.1;
 
-const SHIP_MAX_LIVES = 3;
+const SHIP_MAX_LIVES = 4;
 
 const ASTEROID_MIN_SPLIT_LIMIT = 15;
 const ASTEROID_DAMAGE_SHIELD = 1;
@@ -30,6 +30,7 @@ let ship;
 let sheild;
 let asteroids = [];
 let bullets = [];
+let powerUps;
 
 let title
 
@@ -46,10 +47,12 @@ function setup() {
     createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     ship = new Ship(ASTEROID_DAMAGE_SHIP);
     gui = new GUI(fontSize);
+    powerUps = new PowerUps();
 }
 
 function draw() {
     background(BACKGROUND_COLOR);
+    powerUps.pickPower();
     if (!gameIsOver && gameStarted) {
         gui.show(lives, score, level);
         ship.flash();
