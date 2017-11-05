@@ -130,11 +130,10 @@ function Ship(damageRatio) {
         if (lives !== undefined) {
             this.lives = lives;
         } else {
-            if (lives >= 6) {
-                lives = 6;
-            } else {
-                this.lives++;
-            }    
+            this.lives++;
+            if (this.lives > 6) {
+                this.lives = 6;
+            } 
         }
     }
 

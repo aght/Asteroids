@@ -53,6 +53,7 @@ function setup() {
 function draw() {
     background(BACKGROUND_COLOR);
     powerUps.pickPower();
+    powerUps.show();
     if (!gameIsOver && gameStarted) {
         gui.show(lives, score, level);
         ship.flash();
@@ -69,7 +70,7 @@ function draw() {
                 bullets.splice(i, 1);
             }
         }
-  
+
         for (let i = asteroids.length - 1; i >= 0; --i) {
             asteroids[i].show();
             asteroids[i].update();
@@ -113,29 +114,37 @@ function draw() {
         controls();
     } else {
         if (displayWelcome === true) {
-            push();
-            translate(width / 2, height / 2);
-            textAlign(CENTER);
-            fill(255);
-            stroke(255);
-            textSize(90);
-            text("Asteroids", 0, 0);
-            textSize(20);
-            text("Press 'Enter' to start", 0, height / 2 - 20);
-            pop();
+            welcomeScreen();
         } else if (displayGameOver == true) {
-            push();
-            translate(width/ 2, height / 2);
-            fill(255);
-            stroke(255);
-            textSize(90)
-            textAlign(CENTER);
-            text("GAME OVER" , 0 ,0);
-            textSize(20);
-            text("Press 'Enter' to try again", 0, height/ 2 - 20);
-            pop();
+            gameOverScreen();
         }
     }
+}
+
+function welcomeScreen() {
+    push();
+    translate(width / 2, height / 2);
+    textAlign(CENTER);
+    fill(255);
+    stroke(255);
+    textSize(90);
+    text("Asteroids", 0, 0);
+    textSize(20);
+    text("Press 'Enter' to start", 0, height / 2 - 20);
+    pop();
+}
+
+function gameOverScreen() {
+    push();
+    translate(width / 2, height / 2);
+    fill(255);
+    stroke(255);
+    textSize(90)
+    textAlign(CENTER);
+    text("GAME OVER", 0, 0);
+    textSize(20);
+    text("Press 'Enter' to try again", 0, height / 2 - 20);
+    pop();
 }
 
 function createAsteroids() {
@@ -144,8 +153,8 @@ function createAsteroids() {
         let randX = random(45, width - 45);
         let randY = random(45, height - 45);
         let randRadius = random(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE);
-        while (dist(randX, randY, width/ 2, height/2) < (randRadius + ship.getRadius()) * 4) {
-            console.log("too close");
+        while (dist(randX, randY, width / 2, height / 2) < (randRadius + ship.getRadius()) * 4) {
+            console.log("Asteroid too close to ship, creating new one.");
             randX = random(45, width - 45);
             randY = random(45, height - 45);
         }
