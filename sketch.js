@@ -199,7 +199,7 @@ function keyPressed() {
 }
 
 function reset(newLevel) {
-    if (newLevel !== undefined) {
+    if (newLevel !== undefined && newLevel == true) {
         ship.setPos(width / 2, height / 2);
         asteroids = [];
         bullets = [];
