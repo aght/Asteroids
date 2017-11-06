@@ -9,7 +9,6 @@ function PowerUps() {
                 healthUp[i].hitEdge();
             }   
         }
-  
     }
 
     this.pickPower = function () {

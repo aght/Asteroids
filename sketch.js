@@ -92,7 +92,6 @@ function draw() {
                             asteroids.push(new Asteroid(bullets[j].getPos().x, bullets[j].getPos().y, asteroids[i].getRadius() / 2));
                         }
 
-                        //set score amount based on radius of asteroid
                         if (asteroids[i].getRadius() > 35 && asteroids[i].getRadius() <= 45) {
                             score += SCORE_LARGE;
                         } else if (asteroids[i].getRadius() > 25 && asteroids[i].getRadius() <= 35) {
@@ -185,14 +184,11 @@ function controls() {
 }
 
 function keyPressed() {
-    //Space
     if (keyCode == 32) {
         bullets.push(new Bullet(ship.getShipTipPos().x,
             ship.getShipTipPos().y,
             ship.getRotationRadians()));
     }
-
-    //Enter
     if (keyCode == 13) {
         reset();
     }
@@ -218,5 +214,4 @@ function reset(newLevel) {
         bullets = [];
         createAsteroids();
     }
-
 }

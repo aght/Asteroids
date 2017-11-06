@@ -25,7 +25,13 @@ function Ship(damageRatio) {
         noFill();
         translate(this.pos.x, this.pos.y);
         rotate(this.shipHeadingAngle);
-        quad(-10, 10, 0, -14, 10, 10, 0, 5);
+
+        let p1 = {x:-10, y:10};
+        let p2 = {x:0, y:-14};
+        let p3 = {x:10, y:10};
+        let p4 = {x:0, y:5};
+
+        quad(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
 
         if (debug == true) {
             strokeWeight(1);
