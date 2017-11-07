@@ -88,7 +88,7 @@ function Ship(damageRatio) {
     }
 
     this.checkCollision = function (asteroidX, asteroidY, asteroidRadius) {
-        if (this.allowDamage == true) {
+        if (this.allowDamage === true) {
             if (dist(this.pos.x, this.pos.y, asteroidX, asteroidY) < this.radius + asteroidRadius) {
                 this.allowDamage = false;
 
@@ -100,9 +100,9 @@ function Ship(damageRatio) {
     }
 
     this.flash = function () {
-        if (this.allowDamage == false) {
+        if (this.allowDamage === false) {
             this.frameCountCounter++;
-            if (this.frameCountCounter % 10 == this.maxNumFlashes) {
+            if (this.frameCountCounter % 10 === this.maxNumFlashes) {
                 if (this.flashCounter !== 6) {
                     if (this.isWhite) {
                         this.shipColor = 51;
@@ -141,6 +141,10 @@ function Ship(damageRatio) {
                 this.lives = 6;
             } 
         }
+    }
+
+    this.loseLife = function() {
+        this.lives--;
     }
 
     this.getRadius = function () {

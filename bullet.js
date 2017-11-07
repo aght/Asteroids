@@ -12,7 +12,7 @@ function Bullet(shipTipX, shipTipY, rotation) {
         rotate(this.rot + PI / 2);
         quad(-4, 4, 0, -4, 4, 4, 0, 2);
 
-        if (debug == true) {
+        if (debug === true) {
             stroke(0, 255, 0);
             ellipse(0, 0, 8, 8);
         }

@@ -5,7 +5,7 @@ function GUI(fontSize) {
     this.scoreZeroPaddingLength = 6;
     this.levelZeroPaddingLength = 2;
 
-    this.show = function (lives, score, level) {
+    this.show = function (lives, score, level, hyperspaceStatus) {
         push();
         fill(255);
         translate(this.margin, this.margin);
@@ -35,6 +35,14 @@ function GUI(fontSize) {
             noFill();
             translate(45 + 17 * (i - 1) + 6, this.fontSize + 45);
             quad(-6, 6, 0, -10, 6, 6, 0, 2);
+            pop();
+        }
+
+        if (hyperspaceStatus === true) {
+            push();
+            fill(255);
+            translate(this.margin, height - this.margin);
+            text("Hyperspace ready", 0, 0)
             pop();
         }
     }
