@@ -42,6 +42,7 @@ function GUI(fontSize) {
             push();
             fill(255);
             translate(this.margin, height - this.margin);
+            textSize(this.fontSize - this.fontSize / 4);
             text("Hyperspace ready", 0, 0)
             pop();
         }

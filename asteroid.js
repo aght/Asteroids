@@ -2,13 +2,32 @@ function Asteroid(posX, posY, radius) {
     this.pos = createVector(posX, posY);
     this.points = Math.floor(random(8, 12));
     this.velocity = createVector(random(-2, 2), random(-2, 2));
-    this.r = radius
+    this.r = radius;
+
+    this.offsetLimit = 10;
     this.offset = [];
+    
     this.wrapEdgesFactor = 1.2;
 
-    for (let i = 0; i < this.points; i++) {
-        this.offset[i] = random(-10, 10);
+    //Cartisian Polar coordinate offset based on radius of asteroid
+    if (this.r <= 45 && this.r >= 35) {
+        for (let i = 0; i < this.points; i++) {
+            this.offset[i] = random(-10, 10);
+        }
+    } else if (this.r < 35 && this.r >= 25) {
+        for (let i = 0; i < this.points; i++) {
+            this.offset[i] = random(-8, 8);
+        }
+    } else if (this.r < 25 && this.r >= 15) {
+        for (let i = 0; i < this.points; i++) {
+            this.offset[i] = random(-6, 6);
+        }
+    } else if (this.r < 15) {
+        for (let i = 0; i < this.points; i++) {
+            this.offset[i] = random(-5, 5);
+        }
     }
+
 
     this.show = function () {
         push();
@@ -25,7 +44,7 @@ function Asteroid(posX, posY, radius) {
         }
         endShape(CLOSE);
         pop();
-              
+
         if (debug == true) {
             push();
             noFill();

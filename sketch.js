@@ -3,7 +3,7 @@ var debug = false; //set this value to true in devloper tools to show debug func
 const BACKGROUND_COLOR = 51;
 const CANVAS_WIDTH = 700;
 const CANVAS_HEIGHT = 500;
-const SHIP_ROTATION_INCREMENT = 0.1;
+const SHIP_ROTATION_INCREMENT = 0.08;
 
 const SHIP_MAX_LIVES = 4;
 
@@ -44,6 +44,7 @@ let displayGameOver = false;
 let allowHyperspace = false;
 
 function setup() {
+    frameRate(60);
     let font = loadFont('fonts/Hyperspace Bold.otf');
     textFont(font)
     textSize(fontSize);
@@ -126,7 +127,7 @@ function draw() {
                             bullets.splice(j, 1);
                         }
                     }
-                }   
+                }
             }
         }
     } else {
@@ -139,9 +140,9 @@ function draw() {
 }
 
 function pickPower() {
-    let randPowerIndex = round(random(1, 1000));
-    let randHealthIndex = round(random(1, 1000));
-    let randHyperspaceIndex = round(random(1, 1000));
+    let randPowerIndex = round(random(1, 6000));
+    let randHealthIndex = round(random(1, 6000));
+    let randHyperspaceIndex = round(random(1, 6000));
     if (randPowerIndex === randHealthIndex) {
         healthUp.push(new HealthUp());
         console.log("Health Up");
@@ -229,7 +230,7 @@ function keyPressed() {
             ship.setPos(random(45, width - 45), random(45, height - 45));
             allowHyperspace = false;
         }
-       
+
     }
 }
 
