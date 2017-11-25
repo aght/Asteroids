@@ -139,6 +139,10 @@ function draw() {
     }
 }
 
+/**
+ * Pick a powerup based on picking a random value 
+ * and matching to another random value.
+ */
 function pickPower() {
     let randPowerIndex = round(random(1, 6000));
     let randHealthIndex = round(random(1, 6000));
